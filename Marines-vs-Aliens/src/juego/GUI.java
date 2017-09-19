@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class GUI {
 
-	private JFrame frame;
+	private JFrame frmMarinesvsaliens;
 
 	/**
 	 * Launch the application.
@@ -15,7 +15,7 @@ public class GUI {
 			public void run() {
 				try {
 					GUI window = new GUI();
-					window.frame.setVisible(true);
+					window.frmMarinesvsaliens.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,14 +35,27 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmMarinesvsaliens = new JFrame();
+		frmMarinesvsaliens.setTitle("Marines-vs-Aliens");
+		frmMarinesvsaliens.setBounds(100, 100, 450, 300);
+		frmMarinesvsaliens.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmMarinesvsaliens.getContentPane().setLayout(null);
 		
 		JLabel marinelabel = new JLabel();
-		marinelabel.setIcon(new ImageIcon("C:\\Users\\Usuario\\Documents\\GitHub\\Marines-vs-Aliens\\Marines-vs-Aliens\\src\\juego\\Sin t\u00EDtulo-1.png"));
-		marinelabel.setBounds(10, 169, 44, 81);
-		frame.getContentPane().add(marinelabel);
+		marinelabel.setIcon(new ImageIcon("C:\\Users\\Usuario\\Documents\\GitHub\\Marines-vs-Aliens\\Marines-vs-Aliens\\src\\juego\\marine.png"));
+		marinelabel.setBounds(10, 0, 86, 101);
+		frmMarinesvsaliens.getContentPane().add(marinelabel);
+		
+		JLabel mapa = new JLabel("");
+		mapa.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\green-td.jpg"));
+		mapa.setBounds(0, 0, 434, 261);
+		frmMarinesvsaliens.getContentPane().add(mapa);
+	}
+	
+	public void addPersonaje(){
+		JLabel marinelabel = new JLabel();
+		marinelabel.setIcon(new ImageIcon("C:\\Users\\Usuario\\Documents\\GitHub\\Marines-vs-Aliens\\Marines-vs-Aliens\\src\\juego\\marine.png"));
+		marinelabel.setBounds(10, 149, 86, 101);
+		frmMarinesvsaliens.getContentPane().add(marinelabel);
 	}
 }

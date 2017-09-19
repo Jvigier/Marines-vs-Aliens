@@ -22,4 +22,10 @@ public class Personaje {
 	public int getVida(){
 		return vida;
 	}
+	
+	public void recibirDisparo(int d){
+		if(vida > d)
+			vida -= d;
+		else vida = 0;
+	}
 }
