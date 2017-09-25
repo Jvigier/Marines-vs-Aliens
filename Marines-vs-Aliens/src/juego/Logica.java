@@ -8,22 +8,24 @@ public class Logica {
 	protected Alien [] enemigos;
 	protected Marine [] aliados;
 	protected ObjetoMapa [] objetos;
-	private GUI gui;
+	protected GUI gui;
 	
-	public Logica(){
+	public Logica(GUI gui){
+		this.gui = gui;
+		enemigos = new Alien[5];
+		aliados = new Marine[5];
+		objetos = new ObjetoMapa[4];
+		gui.crearAliado();
+		gui.crearMapa();
+	}
+	
+	public void crearMapa(){
+		gui.crearMapa();
 		mapa = new Mapa(6,10);
-		gui = new GUI();
-		gui.main(null);
 	}
 	
-	public void crearAliado(int f, int c){
-		Marine m = new Marine(10,1,100,1500);
-		if(mapa.getCelda(f, c) == null)
-			mapa.getCelda(f, c).setPersonaje(m);
-		gui.addPersonaje();
-	}
-	
-	public void disparar(Personaje p1, Personaje p2){
-		p2.recibirDisparo(p1.getDaño());
+	public void crearAliado(){
+		gui.crearAliado();
+		mapa.getCelda(0,5).setPersonaje(p);;
 	}
 }
