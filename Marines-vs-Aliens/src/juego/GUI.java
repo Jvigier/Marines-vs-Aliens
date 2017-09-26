@@ -30,7 +30,9 @@ public class GUI {
 	 */
 	public GUI() {
 		initialize();
-		logica = new Logica(this);	
+		logica = new Logica(this);
+		logica.crearMapa();
+		logica.crearAliado();
 	}
 
 	/**
@@ -38,15 +40,15 @@ public class GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(0, 0, 1280, 720);
+		frame.setBounds(0, 0, 1366, 768);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 	}
 	
 	public void crearMapa(){
 		JLabel mapa = new JLabel(new ImageIcon("C:\\Users\\Usuario\\Documents\\GitHub\\Marines-vs-Aliens\\Marines-vs-Aliens\\src\\juego\\mapa.png"));
-		mapa.setBounds(0, 0, 1280, 768);
-		frame.getContentPane().add(mapa);
+		mapa.setBounds(0, 0, 1366, 768);
+		frame.setContentPane(mapa);
 	}
 	
 	public void crearAliado(){
