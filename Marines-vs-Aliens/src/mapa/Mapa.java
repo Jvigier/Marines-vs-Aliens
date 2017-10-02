@@ -16,14 +16,15 @@ public class Mapa {
 		}
 	}
 	
-	public Celda getCelda(int x, int y){
-		if((x < this.width) && (x >= 0) && (y < this.height) && (y >= 0))
-			return this.mapa[x][y];
-		return null;
-	}
-	
 	public Celda[][] getMapa() {
 		return mapa;
+	}
+	
+	public Celda getCelda(int x, int y){
+		int c,f;
+		f=x/128;
+		c=y/100;
+		return mapa[f][c];
 	}
 
 	public int getWidth() {

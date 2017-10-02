@@ -1,22 +1,31 @@
 package juego;
 
 import mapa.*;
-import entidad.*;
+
 import java.util.LinkedList;
+
+import javax.swing.JLabel;
+
+import entidad.*;
 
 public class Logica {
 	protected Mapa mapa;
-	protected LinkedList<Alien> enemigos;
-	protected LinkedList<Marine> aliados;
-	protected LinkedList<ObjetoMapa> objetos;
+	protected LinkedList<ProtoAlien> enemigos;
+	protected LinkedList<ProtoMarine> aliados;
+	protected ProtoMarine[] marines;
+	protected ProtoAlien[] aliens;
+	protected ObjetoMapa [] objetos;
 	protected GUI gui;
+	protected int puntaje;
 	
 	public Logica(GUI gui){
+		mapa = new Mapa(6,10);
 		this.gui = gui;
-		enemigos = new LinkedList<Alien>();
-		aliados = new LinkedList<Marine>();
-		objetos = new LinkedList<ObjetoMapa>();
-		
+		marines = new ProtoMarine[5];
+		marines[0] = new Marine_1();
+		aliens = new ProtoAlien[5];
+		objetos = new ObjetoMapa[4];
+		aliados = new LinkedList<ProtoMarine>();
 	}
 	
 	public void crearMapa(){
@@ -24,10 +33,21 @@ public class Logica {
 		mapa = new Mapa(6,10);
 	}
 	
-	public void crearAliado(){
-		Marine marine1 = new Marine(0,0,0,0);
-		gui.crearAliado();
-		mapa.getCelda(0,5).setPersonaje(marine1);
-		aliados.addLast(marine1);
+	public JLabel crearAliado(int x, int y, int tipo){
+		ProtoMarine m = marines[tipo].clone();
+		Celda c = mapa.getCelda(x, y);
+		m.setCelda(c);
+		c.setPersonaje(m);
+		aliados.add(m);
+		JLabel l = m.getGrafico();
+		l.setBounds(c.getX()*128, c.getY()*100, 128, 100);
+		return l;
+	}
+	
+	public void mover(){
+		//for(Alien e : enemigos){
+			
+		//	e.mover();
+		//}
 	}
 }

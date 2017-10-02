@@ -1,31 +1,40 @@
 package entidad;
 
-public class Personaje {
-	protected int daño;
-	protected int alcance;
+import javax.swing.JLabel;
+
+import mapa.Celda;
+
+public abstract class Personaje implements Entidad {
+	
+	protected JLabel grafico;
+	protected Celda celda;
 	protected int vida;
+	protected int dano;
+	protected int alcance;
 	
-	public Personaje(int daño, int alcance, int vida){
-		this.daño = daño;
-		this.alcance = alcance;
-		this.vida = vida;
+	public Celda getCelda() {
+		return celda;
 	}
 	
-	public int getDaño(){
-		return daño;
+	public void setCelda(Celda c) {
+		celda = c;
 	}
 	
-	public int getAlcance(){
-		return alcance;
+	public JLabel getGrafico() {
+		return grafico;
 	}
 	
-	public int getVida(){
-		return vida;
+	public void setGrafico(JLabel l) {
+		grafico = l;
 	}
 	
-	public void recibirDisparo(int d){
-		if(vida > d)
-			vida -= d;
-		else vida = 0;
-	}
+	public abstract int getDano();
+	
+	public abstract int getAlcance();
+	
+	public abstract int getVida();
+	
+	public abstract void recibirDisparo(int d);
+	
+	public abstract void disparar();
 }
