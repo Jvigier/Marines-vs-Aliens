@@ -14,6 +14,7 @@ public class GUI {
 	private JFrame frame;
 	private Logica logica;
 	private ContadorTiempo tiempo;
+	private JLabel puntaje;
 
 	/**
 	 * Launch the application.
@@ -66,14 +67,14 @@ public class GUI {
 		OyenteBotonEnemigo oyenteEnemigo = new OyenteBotonEnemigo();
 		botonEnemigo.addActionListener(oyenteEnemigo);
 		
-		JLabel puntaje = new JLabel("0");
+		puntaje = new JLabel("0");
 		panelMarket.add(puntaje);
 
 	}
 	
 	private class OyenteBotonAliado implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			crearAliado(1300, 100, 0);
+			crearAliado(0, 200, 0);
 			frame.repaint();
 		}
 	}
@@ -109,6 +110,7 @@ public class GUI {
 	}
 
 	public void repaint() {
+		puntaje.setText(""+logica.getPuntaje());
 		frame.revalidate();
 		frame.repaint();
 	}

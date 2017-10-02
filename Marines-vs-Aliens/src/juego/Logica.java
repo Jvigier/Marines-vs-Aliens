@@ -37,6 +37,10 @@ public class Logica {
 		enemigos = new LinkedList<ProtoAlien>();
 	}
 	
+	public int getPuntaje(){
+		return puntaje;
+	}
+	
 	public void crearMapa(){
 		gui.crearMapa();
 		mapa = new Mapa(6,10);
@@ -96,6 +100,7 @@ public class Logica {
 			a.getCelda().setPersonaje(null);
 			a.setCelda(null);
 			enemigos.remove(a);
+			puntaje = puntaje+a.getPuntaje();
 			
 		}
 		for (ProtoMarine m : eliminarMarines){
