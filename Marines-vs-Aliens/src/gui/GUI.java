@@ -90,7 +90,7 @@ public class GUI {
 	}
 	
 	public void crearMapa(){
-		JLabel mapa = new JLabel(new ImageIcon("C:\\Users\\Usuario\\Documents\\GitHub\\Marines-vs-Aliens\\Marines-vs-Aliens\\src\\juego\\mapa.png"));
+		JLabel mapa = new JLabel(new ImageIcon(this.getClass().getResource("/juego/mapa.png")));
 		mapa.setBounds(0, 0, 1280, 760);
 		frame.setContentPane(mapa);
 	}

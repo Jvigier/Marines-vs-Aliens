@@ -11,7 +11,8 @@ public class Marine_1  extends ProtoMarine {
 	private int precio = 50;
 	
 	public Marine_1 (){
-		grafico = new JLabel(new ImageIcon("C:\\Users\\Usuario\\Documents\\GitHub\\Marines-vs-Aliens\\Marines-vs-Aliens\\src\\juego\\marine.gif"));
+		grafico = new JLabel(new ImageIcon(this.getClass().getResource("/juego/marine.gif")));
+
 	}
 	public ProtoMarine clone(){
 		ProtoMarine p = new Marine_1();

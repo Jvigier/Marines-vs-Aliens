@@ -13,7 +13,7 @@ public class Alien_1 extends ProtoAlien {
 	private int monedas = 50;
 	
 	public Alien_1(){
-		grafico = new JLabel(new ImageIcon("C:\\Users\\Usuario\\Documents\\GitHub\\Marines-vs-Aliens\\Marines-vs-Aliens\\src\\juego\\alien.gif"));
+		grafico = new JLabel(new ImageIcon(this.getClass().getResource("/juego/alien.gif")));
 	}
 	
 	public ProtoAlien clone() {
