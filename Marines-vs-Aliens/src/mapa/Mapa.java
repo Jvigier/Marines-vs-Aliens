@@ -1,8 +1,12 @@
 package mapa;
 
+import juego.Logica;
+
 public class Mapa {
 	private Celda mapa[][];
 	private int width, height;
+	
+	
 
 	public Mapa(int width, int height){
 		this.width = width;
@@ -20,10 +24,15 @@ public class Mapa {
 		return mapa;
 	}
 	
-	public Celda getCelda(int x, int y){
+	public Celda getCelda(int y, int x ){
+		//No tocar, x e y estan al reves. PELIGRO SE ROMPE TODO
 		int c,f;
-		f=x/128;
-		c=y/100;
+		if (x>650 )
+			x=650;
+		if (y>1300)
+			y = 1300;
+		f=x/Logica.CHEIGHT;
+		c=(y)/Logica.CWIDTH;
 		return mapa[f][c];
 	}
 
