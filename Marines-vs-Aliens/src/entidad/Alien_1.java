@@ -5,7 +5,7 @@ import javax.swing.JLabel;
 
 public class Alien_1 extends ProtoAlien {
 
-	private int velocidad = 10;
+	private int velocidad = 2;
 	private int puntaje = 100;
 	private int dano = 10;
 	private int vida = 100;

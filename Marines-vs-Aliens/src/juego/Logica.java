@@ -78,6 +78,7 @@ public class Logica {
 	
 	public void mover(){
 		for (ProtoAlien a : enemigos){
+			a.getGrafico().setLocation(a.getGrafico().getX()-a.getVelocidad(), a.getGrafico().getY());
 		}
 			
 	}
