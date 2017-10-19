@@ -3,7 +3,7 @@ package entidad;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class Alien_1 extends ProtoAlien {
+public class Alien_3 extends ProtoAlien {
 
 	private int velocidad = 2;
 	private int puntaje = 100;
@@ -12,12 +12,12 @@ public class Alien_1 extends ProtoAlien {
 	private int alcance = 1;
 	private int monedas = 50;
 	
-	public Alien_1(){
+	public Alien_3(){
 		grafico = new JLabel(new ImageIcon(this.getClass().getResource("/juego/alien.gif")));
 	}
 	
 	public ProtoAlien clone() {
-		ProtoAlien a = new Alien_1();
+		ProtoAlien a = new Alien_3();
 		return a;
 	}
 
@@ -31,6 +31,11 @@ public class Alien_1 extends ProtoAlien {
 
 	public int getMonedas() {
 		return monedas;
+	}
+
+	public void mover() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public int getDano() {
@@ -49,6 +54,9 @@ public class Alien_1 extends ProtoAlien {
 		vida = vida - d;
 	}
 
-	public void disparar() {
+	public void disparar() {		
 	}
+
 }
+
+

@@ -40,7 +40,6 @@ public class GUI {
 		initialize();
 		tiempo = new ContadorTiempo(logica,this);
 		tiempo.start();
-		
 	}
 
 	/**

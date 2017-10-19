@@ -10,5 +10,15 @@ public abstract class ProtoAlien extends Personaje {
 	
 	public abstract int getMonedas();
 	
-	public abstract void mover();
+	public void visit(ObjetoMapa o){
+		o.recibirDano(getDano());
+	}
+	
+	public void visit(ProtoMarine p){
+		p.recibirDisparo(getDano());
+	}
+	
+	public void accept(ProtoMarine p){
+		p.visit(this);
+	}
 }

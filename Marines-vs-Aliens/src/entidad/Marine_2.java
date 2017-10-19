@@ -4,18 +4,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 
-public class Marine_1  extends ProtoMarine {
+public class Marine_2  extends ProtoMarine {
 	private int dano = 10;
 	private int vida = 100;
-	private int alcance = 6;
+	private int alcance = 2;
 	private int precio = 50;
 	
-	public Marine_1 (){
+	public Marine_2 (){
 		grafico = new JLabel(new ImageIcon(this.getClass().getResource("/juego/marine.gif")));
 
 	}
 	public ProtoMarine clone(){
-		ProtoMarine p = new Marine_1();
+		ProtoMarine p = new Marine_2();
 		return p;
 	}
 	
@@ -36,7 +36,7 @@ public class Marine_1  extends ProtoMarine {
 	}
 
 	public void recibirDisparo(int d) {
-		vida = vida-d;
+		
 	}
 
 	public void disparar() {

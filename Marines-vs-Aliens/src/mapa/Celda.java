@@ -51,9 +51,9 @@ public class Celda {
 	}
 	
 	public Celda getSiguiente(){
-		return mapa.getCelda(x-1, y);
+		return mapa.getCelda(x*136, (y-1)*111);
 	}
-
+	
 	public int getX() {
 		return x;
 	}

@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import entidad.*;
 import gui.GUI;
 
+//Clase Logica
+//Es la que maneja la parte logica del juego
 public class Logica {
 	protected Mapa mapa;
 	protected LinkedList<ProtoAlien> enemigos;
@@ -22,7 +24,6 @@ public class Logica {
 	
 	public static final int CWIDTH = 136;
 	public static final int CHEIGHT = 111;
-	//public static final int MOFFSET = 100;
 	
 	
 	public Logica(GUI gui){
@@ -37,33 +38,35 @@ public class Logica {
 		enemigos = new LinkedList<ProtoAlien>();
 	}
 	
-	public int getPuntaje(){
-		return puntaje;
-	}
-	
+	//Crea el mapa del juego
 	public void crearMapa(){
 		gui.crearMapa();
 		mapa = new Mapa(6,10);
 	}
 	
+	//Retorna el puntaje del juego
+		public int getPuntaje(){
+			return puntaje;
+	}
+	
+	//Retorna una lista de enemigos del juego
 	public LinkedList<ProtoAlien> getEnemigos(){
 		return enemigos;
 	}
 	
+	//Crea un aliado, y lo agrega grafica y logicamente
 	public JLabel crearAliado(int x, int y, int tipo){
 		ProtoMarine m = marines[tipo].clone();
 		Celda c = mapa.getCelda(y, x);
-		//Celda c = mapa.getCelda(1230,670);
 		m.setCelda(c);
 		c.setPersonaje(m);
 		aliados.add(m);
 		JLabel l = m.getGrafico();
-		//System.out.println(c.getX()*CWIDTH, c.getY()*CHEIGHT+MOFFSET, CWIDTH, CHEIGHT);
 		l.setBounds(c.getY()*CWIDTH, c.getX()*CHEIGHT, CWIDTH, CHEIGHT);
 		return l;
 	}
 	
-	
+	//Crea un enemigo, y lo agrega grafica y logicamente
 	public JLabel crearEnemigo(){
 		Random rnd = new Random();
 		ProtoAlien a = aliens[0].clone();
@@ -76,12 +79,22 @@ public class Logica {
 		return l;
 	}
 	
-	public void mover(){
+	//Mueve a los enemigos del juego
+	public void mover(){		
 		for (ProtoAlien a : enemigos){
+			int x = a.getGrafico().getX();
+			int y = a.getGrafico().getY();
+			//if(mapa.getCelda(x-a.getVelocidad(), y).getPersonaje() == null && mapa.getCelda(x-a.getVelocidad(), y).getObjeto() == null)
+			if(a.getCelda().getSiguiente().getPersonaje() == null && a.getCelda().getSiguiente().getObjeto() == null){
+				x = a.getGrafico().getX()-a.getVelocidad();
+				a.getGrafico().setLocation(x, y);
+				a.setCelda(mapa.getCelda(x,y));
+				//System.out.println(a.getCelda().getX()+""+a.getCelda().getY());
+			}
 		}
-			
 	}
-
+	
+	//Mata a aquellos personajes del juego que se encuentren con  una vida menor o igual que 0
 	public void morir() {
 		LinkedList<ProtoAlien> eliminarAliens = new LinkedList<>();
 		LinkedList<ProtoMarine> eliminarMarines = new LinkedList<>();
@@ -107,8 +120,25 @@ public class Logica {
 			gui.removerLabel(m.getGrafico());
 			m.getCelda().setPersonaje(null);
 			m.setCelda(null);
-			enemigos.remove(m);
+			aliados.remove(m);
 			
+		}
+	}
+	
+	//Produce los ataques entre los personajes que estan a rango
+	public void atacar(){
+		for(ProtoAlien a : enemigos){
+			for(ProtoMarine m : aliados){
+				System.out.println("Y alien: "+a.getCelda().getY()+" X alien: "+a.getCelda().getX()+" Y marine: "+m.getCelda().getY()+" X marine: "+m.getCelda().getX());
+				if(m.getCelda().getY() == a.getCelda().getY() && a.getCelda().getX()-m.getCelda().getX() <= a.getAlcance())
+					a.visit(m);
+			}
+		}
+		for(ProtoMarine m : aliados){
+			for(ProtoAlien a : enemigos){
+				if(a.getCelda().getY() == m.getCelda().getY() && a.getCelda().getX()-m.getCelda().getX() <= m.getAlcance())
+					m.visit(a);
+			}
 		}
 	}
 }

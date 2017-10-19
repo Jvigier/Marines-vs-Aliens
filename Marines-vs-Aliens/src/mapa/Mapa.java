@@ -24,16 +24,16 @@ public class Mapa {
 		return mapa;
 	}
 	
-	public Celda getCelda(int y, int x ){
-		//No tocar, x e y estan al reves. PELIGRO SE ROMPE TODO
+	
+	public Celda getCelda(int x, int y ){
 		int c,f;
-		if (x>650 )
-			x=650;
-		if (y>1300)
-			y = 1300;
-		f=x/Logica.CHEIGHT;
-		c=(y)/Logica.CWIDTH;
-		return mapa[f][c];
+		if (y>650 )
+			y=650;
+		if (x>1300)
+			x = 1300;
+		f = x/Logica.CWIDTH;
+		c = y/Logica.CHEIGHT;
+		return mapa[c][f];
 	}
 
 	public int getWidth() {
