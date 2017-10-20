@@ -55,9 +55,9 @@ public class Logica {
 	}
 	
 	//Crea un aliado, y lo agrega grafica y logicamente
-	public JLabel crearAliado(int x, int y, int tipo){
+	public JLabel crearAliado(int columna, int fila, int tipo){
 		ProtoMarine m = marines[tipo].clone();
-		Celda c = mapa.getCelda(y, x);
+		Celda c = mapa.getCelda(fila, columna);
 		m.setCelda(c);
 		c.setPersonaje(m);
 		aliados.add(m);
