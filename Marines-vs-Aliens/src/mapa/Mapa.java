@@ -6,8 +6,6 @@ public class Mapa {
 	private Celda mapa[][];
 	private int width, height;
 	
-	
-
 	public Mapa(int width, int height){
 		this.width = width;
 		this.height = height;
@@ -20,26 +18,28 @@ public class Mapa {
 		}
 	}
 	
+	//Retorna el arreglo de celdas
 	public Celda[][] getMapa() {
 		return mapa;
 	}
 	
-	
-	public Celda getCelda(int x, int y ){
-		int c,f;
-		if (y>650 )
-			y=650;
-		if (x>1300)
-			x = 1300;
-		f = x/Logica.CWIDTH;
-		c = y/Logica.CHEIGHT;
-		return mapa[c][f];
+	//Retorna la celda en las coordenadas fila, columna
+	public Celda getCelda(int fila, int columna){
+		if (fila > 650 )
+			fila=650;
+		if (columna > 1300)
+			columna = 1300;
+		fila = fila/Logica.CHEIGHT;
+		columna = columna/Logica.CWIDTH;
+		return mapa[fila][columna];
 	}
-
+	
+	//Retorna el ancho del mapa
 	public int getWidth() {
 		return width;
 	}
-
+	
+	//Retorna el alto del mapa
 	public int getHeight() {
 		return height;
 	}

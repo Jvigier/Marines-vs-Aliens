@@ -7,7 +7,7 @@ public class Alien_4 extends ProtoAlien {
 
 	private int velocidad = 2;
 	private int puntaje = 100;
-	private int dano = 10;
+	private int dano = 50;
 	private int vida = 100;
 	private int alcance = 1;
 	private int monedas = 50;
@@ -16,47 +16,44 @@ public class Alien_4 extends ProtoAlien {
 		grafico = new JLabel(new ImageIcon(this.getClass().getResource("/juego/alien.gif")));
 	}
 	
+	//Clona el objeto
 	public ProtoAlien clone() {
 		ProtoAlien a = new Alien_4();
 		return a;
 	}
-
+	
+	//Retorna la velocidad del alien
 	public int getVelocidad() {
 		return velocidad;
 	}
-
+	
+	//Retorna el puntaje del alien
 	public int getPuntaje() {
 		return puntaje;
 	}
-
+	
+	//Retorna las monedas del alien
 	public int getMonedas() {
 		return monedas;
 	}
-
-	public void mover() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
+	//Retorna el dano del alien
 	public int getDano() {
 		return dano;
 	}
-
+	
+	//Retorna el alcance del alien
 	public int getAlcance() {
 		return alcance;
 	}
-
+	
+	//Retorna la vida del alien
 	public int getVida() {
 		return vida;
 	}
-
+	
+	//Disminuye la vida del alien
 	public void recibirDisparo(int d) {
 		vida = vida - d;
 	}
-
-	public void disparar() {		
-	}
-
 }
-
-

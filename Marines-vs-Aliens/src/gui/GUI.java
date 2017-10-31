@@ -73,18 +73,19 @@ public class GUI {
 	
 	private class OyenteBotonAliado implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			crearAliado(0, 200, 0);
-			frame.repaint();
+			crearAliado(200, 0, 0);
+			//crearObjeto();
 		}
 	}
 	
 	private class OyenteBotonEnemigo implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			if (logica.getEnemigos().isEmpty()){
+			crearEnemigo();
+			/**if (logica.getEnemigos().isEmpty()){
 				crearEnemigo();
 			} else {
 				logica.getEnemigos().getFirst().recibirDisparo(100);
-			}
+			}**/
 		}
 	}
 	
@@ -94,8 +95,13 @@ public class GUI {
 		frame.setContentPane(mapa);
 	}
 	
-	public void crearAliado(int y, int x,int tipo){
-		JLabel l = logica.crearAliado(x, y, tipo);
+	/**public void crearObjeto(){
+		JLabel l = logica.crearObjeto();
+		frame.getContentPane().add(l);
+	}**/
+	
+	public void crearAliado(int fila, int columna,int tipo){
+		JLabel l = logica.crearAliado(fila, columna, tipo);
 		frame.getContentPane().add(l);
 	}
 	

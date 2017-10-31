@@ -4,8 +4,6 @@ import javax.swing.JLabel;
 
 import mapa.Celda;
 
-//Interface Entidad
-//Se declaran los comandos y consultas que posee una Entidad del mapa
 public interface Entidad {
 	
 	//Retorna la celda donde esta ubicada la entidad
