@@ -3,14 +3,12 @@ package mapa;
 import java.util.LinkedList;
 import entidad.Personaje;
 import juego.Logica;
-import entidad.ObjetoMapaVida;
+import entidad.ObjetoVida;
 import entidad.Entidad;
 
 public class Celda {
 	protected Personaje personaje;
-	protected ObjetoMapaVida objeto;
-	//nuevo
-	protected Entidad entidad;
+	protected ObjetoVida objeto;
 	protected Mapa mapa;
 	protected int fila;
 	protected int columna;
@@ -18,30 +16,18 @@ public class Celda {
 	public Celda(Mapa mapa, int fila, int columna){
 		this.personaje = null;
 		this.objeto = null;
-		//nuevo
-		this.entidad = null;
 		this.mapa = mapa;
 		this.fila = fila;
 		this.columna = columna;
 	}
 	
-	//nuevo
-	public void setEntidad(Entidad e){
-		entidad = e;
-	}
-	
-	//nuevo
-	public Entidad getEntidad(){
-		return entidad;
-	}
-	
 	//Setea un objeto en la celda
-	public void setObjeto(ObjetoMapaVida o){
+	public void setObjeto(ObjetoVida o){
 		objeto = o;
 	}
 	
 	//Retorna el objeto de la celda
-	public ObjetoMapaVida getObjeto(){
+	public ObjetoVida getObjeto(){
 		return objeto;
 	}
 	
@@ -71,7 +57,17 @@ public class Celda {
 	
 	//Retorna la celda de la izquierda a la actual
 	public Celda getSiguiente(){
-		return mapa.getCelda(fila*Logica.CHEIGHT, (columna-1)*Logica.CWIDTH);
+		if(columna == 0)
+			return null;
+		else
+			return mapa.getCelda(fila*Logica.CHEIGHT, (columna-1)*Logica.CWIDTH);
+	}
+	
+	public Celda getDerecha(){
+		if(columna == 9)
+			return null;
+		else
+			return mapa.getCelda(fila*Logica.CHEIGHT, (columna+1)*Logica.CWIDTH);
 	}
 	
 	//Retorna la fila del mapa en la que se encuentra la celda

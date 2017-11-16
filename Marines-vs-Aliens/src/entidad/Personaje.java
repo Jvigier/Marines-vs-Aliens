@@ -6,10 +6,17 @@ import mapa.Celda;
 
 public abstract class Personaje implements Entidad {
 	protected JLabel grafico;
+	protected JLabel graficoPU;
+	protected JLabel graficoAtaque;
 	protected Celda celda;
 	protected int vida;
 	protected int dano;
 	protected int alcance;
+	protected State state;
+	
+	public JLabel getGraficoPU(){
+		return graficoPU;
+	}
 	
 	//Retorna la celda del personaje
 	public Celda getCelda() {
@@ -42,4 +49,30 @@ public abstract class Personaje implements Entidad {
 	
 	//Disminuye la vida del personaje
 	public abstract void recibirDisparo(int d);
+	
+	public void setState(State state){
+		this.state = state;
+	}
+	
+	public State getState(){
+		return state;
+	}
+	
+	public void escudoON(){
+		vida = vida + 300;
+	}
+	
+	public void escudoOFF(){
+		vida = vida - 300;
+	}
+	
+	public void beastON(){
+		dano = dano + 50;
+		alcance++;
+	}
+	
+	public void beastOFF(){
+		dano = dano - 50;
+		alcance--;
+	}
 }

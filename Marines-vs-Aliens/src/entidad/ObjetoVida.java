@@ -3,7 +3,7 @@ package entidad;
 import javax.swing.JLabel;
 import mapa.Celda;
 
-public abstract class ObjetoMapaVida implements Entidad{
+public abstract class ObjetoVida implements Entidad{
 	protected int vida;
 	protected Celda celda;
 	protected JLabel grafico;
@@ -13,6 +13,8 @@ public abstract class ObjetoMapaVida implements Entidad{
 		return celda;
 	}
 		
+	public abstract ObjetoVida clone();
+	
 	//Setea la celda del personaje
 	public void setCelda(Celda c) {
 		celda = c;
@@ -33,7 +35,7 @@ public abstract class ObjetoMapaVida implements Entidad{
 	}
 	
 	public void accept(ProtoAlien p){
-		recibirDano(p.dano);
+		p.visit(this);
 	}
 	
 	public void recibirDano(int d){

@@ -14,7 +14,7 @@ public abstract class ProtoAlien extends Personaje {
 	public abstract int getMonedas();
 	
 	//Visitor para atacar un objeto
-	public void visit(ObjetoMapaVida o){
+	public void visit(ObjetoVida o){
 		o.recibirDano(getDano());
 	}
 	
