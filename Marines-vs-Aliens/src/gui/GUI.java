@@ -105,7 +105,6 @@ public class GUI {
 			int fila = e.getY();
 			Mapa m = logica.getMapa();
 			if(m.getCelda(fila, columna).getPersonaje() == null && m.getCelda(fila, columna).getObjeto() == null){
-				//System.out.println(arg0);
 				crearAliado(fila, columna, numeroAliado);
 				frame.getContentPane().removeMouseListener(o);
 			}

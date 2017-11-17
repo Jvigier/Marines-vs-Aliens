@@ -123,12 +123,15 @@ public class Logica {
 	//Mueve a los enemigos del juego
 	public void mover(){		
 		for (ProtoAlien a : enemigos){
+			System.out.println(a.getCelda().getPersonaje());
 			int fila = a.getGrafico().getY();
 			int columna = a.getGrafico().getX();
 			if(mapa.getCelda(fila, columna-a.getVelocidad()).getPersonaje() == null && mapa.getCelda(fila, columna-a.getVelocidad()).getObjeto() == null && columna-a.getVelocidad()>=0){
+				mapa.getCelda(fila, columna).setPersonaje(null);
 				columna = a.getGrafico().getX()-a.getVelocidad();
 				a.getGrafico().setLocation(columna, fila);
 				a.setCelda(mapa.getCelda(fila,columna));
+				mapa.getCelda(fila, columna).setPersonaje(a);
 			}
 			if(columna == 0)
 				gui.gameOver();
