@@ -18,11 +18,14 @@ public class Logica {
 	protected LinkedList<ProtoAlien> enemigos;
 	protected LinkedList<ProtoMarine> aliados;
 	protected LinkedList<ObjetoVida> objetos;
+	protected LinkedList<ObjetoTiempo> objetosT;
 	protected ProtoMarine[] marines;
 	protected ProtoAlien[] aliens;
 	protected ObjetoVida [] objetosVida;
+	protected ObjetoTiempo [] objetosTiempo;
 	protected int puntaje;
-	protected int contadorPowerUP;
+	protected int contadorPU;
+	protected int monedas;
 	
 	public Logica(GUI gui){
 		this.gui = gui;
@@ -42,10 +45,15 @@ public class Logica {
 		objetosVida = new ObjetoVida[2];
 		objetosVida[0] = new Barril();
 		objetosVida[1] = new Meteorito();
+		objetosTiempo = new ObjetoTiempo[2];
+		objetosTiempo[0] = new Agujero();
+		objetosTiempo[1] = new LiquidoToxico();
 		aliados = new LinkedList<ProtoMarine>();
 		enemigos = new LinkedList<ProtoAlien>();
 		objetos = new LinkedList<ObjetoVida>();
-		contadorPowerUP = 0;
+		objetosT = new LinkedList<ObjetoTiempo>();
+		contadorPU = 0;
+		monedas = 450;
 	}
 	
 	//Crea el mapa del juego
@@ -73,11 +81,37 @@ public class Logica {
 		ProtoMarine m = marines[tipo].clone();
 		Celda c = mapa.getCelda(fila, columna);
 		m.setCelda(c);
-		c.setPersonaje(m);
+		c.setMarine(m);
 		aliados.add(m);
 		JLabel l = m.getGrafico();
 		l.setBounds(c.getColumna()*CWIDTH, c.getFila()*CHEIGHT, CWIDTH, CHEIGHT);
+		monedas = monedas-m.getPrecio();	
+		deshabilitarBotones();
 		return l;
+	}
+	
+	public JLabel crearBastion(int fila, int columna){
+		ProtoMarine m1 = marines[4].clone();
+		ProtoMarine m2 = marines[4].clone();
+		m1.setSegundo(m2);
+		m2.setSegundo(m1);
+		Celda c1 = mapa.getCelda(fila, columna);
+		Celda c2 = mapa.getCelda(fila, columna).getArriba();
+		m1.setCelda(c1);
+		m2.setCelda(c2);
+		c1.setMarine(m1);
+		c2.setMarine(m2);
+		aliados.add(m1);
+		aliados.add(m2);
+		JLabel l = m1.getGrafico();
+		l.setBounds(c1.getColumna()*CWIDTH, c1.getFila()*CHEIGHT, CWIDTH, CHEIGHT*2);
+		monedas = monedas-m1.getPrecio();	
+		deshabilitarBotones();
+		return l;
+	}
+	
+	public int getMonedas(){
+		return monedas;
 	}
 	
 	//Crea un enemigo, y lo agrega grafica y logicamente
@@ -86,14 +120,9 @@ public class Logica {
 		ProtoAlien a = aliens[tipo].clone();
 		Celda c = mapa.getCelda(rnd1.nextInt(650),1300);
 		a.setCelda(c);
-		c.setPersonaje(a);
+		c.getAliens().add(a);
 		enemigos.add(a);
-		JLabel l = a.getGrafico();
-		if(rnd1.nextInt(10) == 1){
-			PU_CampoProteccion CP = new PU_CampoProteccion();
-			CP.cambiarEstado(a);
-			//a.setGrafico(a.getGraficoPU());
-		}
+		JLabel l = a.getGrafico();	
 		l.setBounds(c.getColumna()*CWIDTH, c.getFila()*CHEIGHT, CWIDTH, CHEIGHT);
 		return l;
 	}
@@ -108,8 +137,8 @@ public class Logica {
 		Celda c = null;
 		boolean celda_null = false;
 		while(!celda_null){
-			c = mapa.getCelda(rnd.nextInt(650), rnd.nextInt(1300));
-			if(c.getPersonaje() == null && c.getObjeto() == null)
+			c = mapa.getCelda(rnd.nextInt(650), rnd.nextInt(1000)+136);
+			if(c.getAliens().isEmpty() && c.getObjeto() == null && c.getMarine()==null)
 				celda_null = true;
 		}
 		o.setCelda(c);
@@ -120,21 +149,88 @@ public class Logica {
 		return l;
 	}
 	
+	public JLabel crearObjetoT(){
+		Random rnd = new Random();
+		ObjetoTiempo o = null;
+		if(rnd.nextInt(2) == 0)
+			o = objetosTiempo[0].clone();
+		else
+			o = objetosTiempo[1].clone();
+		Celda c = null;
+		boolean celda_null = false;
+		while(!celda_null){
+			c = mapa.getCelda(rnd.nextInt(650), rnd.nextInt(1000)+136);
+			if(c.getAliens().isEmpty() && c.getObjeto()==null && c.getMarine()==null && c.getObjetoT()==null)
+				celda_null = true;
+		}
+		o.setCelda(c);
+		c.setObjetoT(o);
+		JLabel l = o.getGrafico();
+		objetosT.addLast(o);
+		l.setBounds(c.getColumna()*CWIDTH, c.getFila()*CHEIGHT, CWIDTH, CHEIGHT);
+		return l;
+	}
+	
+	private boolean puedeMoverse(int fila, int columna, ProtoAlien a){
+		boolean toReturn = false;
+		if(a.getCelda().getColumna()!=0)
+			toReturn = mapa.getCelda(fila, columna).getIzquierda().getMarine() == null 
+						&& mapa.getCelda(fila, columna).getIzquierda().getObjeto() == null ;
+		return toReturn;
+	}
+	
 	//Mueve a los enemigos del juego
-	public void mover(){		
-		for (ProtoAlien a : enemigos){
-			System.out.println(a.getCelda().getPersonaje());
-			int fila = a.getGrafico().getY();
-			int columna = a.getGrafico().getX();
-			if(mapa.getCelda(fila, columna-a.getVelocidad()).getPersonaje() == null && mapa.getCelda(fila, columna-a.getVelocidad()).getObjeto() == null && columna-a.getVelocidad()>=0){
-				mapa.getCelda(fila, columna).setPersonaje(null);
-				columna = a.getGrafico().getX()-a.getVelocidad();
-				a.getGrafico().setLocation(columna, fila);
-				a.setCelda(mapa.getCelda(fila,columna));
-				mapa.getCelda(fila, columna).setPersonaje(a);
+	public void mover(){
+		if(!enemigos.isEmpty()){
+			for (ProtoAlien a : enemigos){
+				int fila = a.getGrafico().getY();
+				int columna = a.getGrafico().getX();
+				int columnaAux;
+				if(puedeMoverse(fila,columna,a)){
+					if(a.getCelda().getObjetoT()!=null){
+						ObjetoTiempo o = a.getCelda().getObjetoT();
+						a.accept(o);
+						gui.removerLabel(o.getGrafico());
+						o.getCelda().setObjetoT(null);
+						o.setCelda(null);
+						objetosT.remove(o);
+					}
+					columnaAux = columna;
+					columna = a.getGrafico().getX()-a.getVelocidad();
+					a.getGrafico().setLocation(columna, fila);
+					a.setCelda(mapa.getCelda(fila,columna));
+					if(columna != columnaAux){
+						mapa.getCelda(fila, columnaAux).getAliens().remove(a);
+						mapa.getCelda(fila, columna).getAliens().add(a);
+					}
+				}
+				else{
+					if(mapa.getCelda(fila,columna-a.getVelocidad()).getColumna() == a.getCelda().getColumna()){
+						columna = columna - a.getVelocidad();
+						a.getGrafico().setLocation(columna,fila);
+					}
+				}
+				if(columna <= 0 )
+					gui.gameOver();
 			}
-			if(columna == 0)
-				gui.gameOver();
+		}
+	}
+	
+	public void PowerUP(){
+		Random rnd = new Random();
+		int r = rnd.nextInt(3);
+		ProtoMarine m;
+		if(contadorPU == 5 && !aliados.isEmpty() && !enemigos.isEmpty()){
+			m = aliados.getFirst();
+			if(r == 0){
+				m.campoProteccion();
+				enemigos.getFirst().campoProteccion();
+			}
+			if(r == 1)
+				m.escudo();
+			if(r == 2)
+				m.aumentarAlcance();
+			contadorPU = 0;
 		}
 	}
 	
@@ -143,113 +239,125 @@ public class Logica {
 		LinkedList<ProtoAlien> eliminarAliens = new LinkedList<>();
 		LinkedList<ProtoMarine> eliminarMarines = new LinkedList<>();
 		LinkedList<ObjetoVida> eliminarObjetos = new LinkedList<>();
-		for (ProtoAlien a : enemigos){
+		
+		for (ProtoAlien a : enemigos)
 			if (a.getVida() <= 0){
 				eliminarAliens.add(a);
-				contadorPowerUP++;
+				contadorPU++;
 			}
-		}
-		for (ProtoMarine m : aliados){
-			if (m.getVida() <= 0){
+		
+		for (ProtoMarine m : aliados)
+			if (m.getVida() <= 0)
 				eliminarMarines.add(m);
-			}
-		}
+		
 		for(ObjetoVida o : objetos)
 			if(o.getVida() <= 0)
 				eliminarObjetos.add(o);
+		
 		for (ProtoAlien a : eliminarAliens){
 			gui.removerLabel(a.getGrafico());
-			a.getCelda().setPersonaje(null);
+			a.getCelda().getAliens().remove(a);
 			a.setCelda(null);
 			enemigos.remove(a);
 			puntaje = puntaje+a.getPuntaje();
-			
+			monedas = monedas+a.getMonedas();
+			habilitarBotones();		
 		}
+		
 		for (ProtoMarine m : eliminarMarines){
 			gui.removerLabel(m.getGrafico());
-			m.getCelda().setPersonaje(null);
+			m.getCelda().setMarine(null);
 			m.setCelda(null);
 			aliados.remove(m);
 		}
+		
 		for(ObjetoVida o : eliminarObjetos){
 			gui.removerLabel(o.getGrafico());
 			o.getCelda().setObjeto(null);
 			o.setCelda(null);
 			objetos.remove(o);
-		}
-		
-		/*Random r = new Random();
-		if(r.nextInt(20) < contadorPowerUP){
-			PU_CampoProteccion CP = new PU_CampoProteccion();
-			PU_Escudo E = new PU_Escudo();
-			PU_Beast B = new PU_Beast();
-			int r2 = r.nextInt(3);
-			ProtoMarine p = aliados.getFirst();
-			if(r2 == 0){
-				CP.cambiarEstado(p);
-				p.setGrafico(p.getGraficoPU());
-			}
-			else
-				if(r2 == 1){
-					E.cambiarEstado(p);
-					p.setGrafico(p.getGraficoPU());
-				}
-				else{
-					B.cambiarEstado(p);
-					p.setGrafico(p.getGraficoPU());
-				}
-		}*/
-			
+		}	
+	}
+	
+	private boolean puedeAtacar(Personaje p, Entidad e){
+		return p.getCelda().getFila() == e.getCelda().getFila() 
+				&& p.getCelda().getColumna()-e.getCelda().getColumna() <= p.getAlcance() 
+				&& p.getCelda().getColumna()-e.getCelda().getColumna() > 0;
+	}
+	
+	private boolean puedeAtacarM(Personaje p, Entidad e){
+		return p.getCelda().getFila() == e.getCelda().getFila() 
+				&& e.getCelda().getColumna()-p.getCelda().getColumna() <= p.getAlcance() 
+				&& e.getCelda().getColumna()-p.getCelda().getColumna() > 0;
 	}
 	
 	//Produce los ataques entre los personajes que estan a rango
 	public void atacar(){
 		ProtoAlien alien;
 		ProtoMarine marine;
-		for(ProtoAlien a : enemigos){
-			marine = null;
-			for(ObjetoVida o : objetos)
-				if(a.getCelda().getFila() == o.getCelda().getFila() && a.getCelda().getColumna()-o.getCelda().getColumna() <= a.getAlcance())
-					o.accept(a);
-			for(ProtoMarine m : aliados){
-				if(m.getCelda().getFila() == a.getCelda().getFila() && a.getCelda().getColumna()-m.getCelda().getColumna() <= a.getAlcance() && a.getCelda().getColumna()-m.getCelda().getColumna() > 0){
-					if(marine == null)
-						marine = m;
-					else
-						if(m.getCelda().getColumna() > marine.getCelda().getColumna())
-							marine = m;
-				}
-			}
-			if(marine != null){
-				marine.accept(a);
-				if(a.getState().toString() == "campoProteccion" && a.getCelda().getColumna()-marine.getCelda().getColumna() == 1){
-					marine.recibirDisparo(1000);
-					PU_Off s = new PU_Off();
-					s.cambiarEstado(a);
-					//a.setGrafico(a.getGrafico());
-				}
-			}
-		}
-		for(ProtoMarine m : aliados){
-			alien = null;
+		if(!enemigos.isEmpty()){
 			for(ProtoAlien a : enemigos){
-				if(a.getCelda().getFila() == m.getCelda().getFila() && a.getCelda().getColumna()-m.getCelda().getColumna() <= m.getAlcance() && a.getCelda().getColumna()-m.getCelda().getColumna()>0){
-					if(alien == null)
-						alien = a;
-					else
-						if(a.getCelda().getColumna() < alien.getCelda().getColumna())
-							alien = a;
+				marine = null;
+				
+				for(ObjetoVida o : objetos)
+					if(puedeAtacar(a,o))
+						o.accept(a);
+				
+				for(ProtoMarine m : aliados){
+					if(puedeAtacar(a,m)){
+						if(marine == null)
+							marine = m;
+						else
+							if(m.getCelda().getColumna() > marine.getCelda().getColumna())
+								marine = m;
+					}
 				}
-			}
-			if(alien != null){
-				alien.accept(m);
-				if(m.getState().toString() == "campoProteccion" && alien.getCelda().getColumna()-m.getCelda().getColumna() == 1){
-					alien.recibirDisparo(1000);
-					PU_Off s = new PU_Off();
-					s.cambiarEstado(m);
-					m.setGrafico(m.getGrafico());
-				}
+				if(marine != null)
+					marine.accept(a);
+				
 			}
 		}
+		if(!aliados.isEmpty()){
+			for(ProtoMarine m : aliados){
+				alien = null;
+				for(ProtoAlien a : enemigos){
+					if(puedeAtacarM(m,a)){
+						if(alien == null)
+							alien = a;
+						else
+							if(a.getCelda().getColumna() < alien.getCelda().getColumna())
+								alien = a;
+					}
+				}
+				if(alien != null)
+					alien.accept(m);
+			}
+		}
+	}
+	
+	public void deshabilitarBotones(){
+		if(monedas<marines[0].getPrecio())
+			gui.deshabilitarMarine1();
+		else if(monedas>=marines[0].getPrecio() && monedas<marines[1].getPrecio())
+				gui.deshabilitarMarine2();
+		else if(monedas>=marines[1].getPrecio() && monedas<marines[2].getPrecio())
+			gui.deshabilitarMarine3();
+		else if(monedas>=marines[2].getPrecio() && monedas<marines[3].getPrecio())
+			gui.deshabilitarMarine4();
+		else if(monedas>=marines[3].getPrecio() && monedas<marines[4].getPrecio())
+			gui.deshabilitarMarine5();
+	}
+	
+	public void habilitarBotones(){
+		if(monedas>=marines[4].getPrecio())
+			gui.habilitarMarine5();
+		else if(monedas>=marines[3].getPrecio() && monedas<marines[4].getPrecio())
+				gui.habilitarMarine4();
+		else if(monedas>=marines[2].getPrecio() && monedas<marines[3].getPrecio())
+			gui.habilitarMarine3();
+		else if(monedas>=marines[1].getPrecio() && monedas<marines[2].getPrecio())
+			gui.habilitarMarine2();
+		else if(monedas>=marines[0].getPrecio())
+			gui.habilitarMarine1();
 	}
 }

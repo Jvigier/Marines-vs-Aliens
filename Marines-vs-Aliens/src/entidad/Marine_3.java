@@ -5,15 +5,13 @@ import javax.swing.JLabel;
 
 
 public class Marine_3  extends ProtoMarine {
-	private int dano = 12;
-	private int vida = 300;
-	private int alcance = 2;
-	private int precio = 150;
 	
 	public Marine_3 (){
-		state = new PU_Off();
+		dano = 2;
+		vida = 300;
+		alcance = 4;
+		precio = 150;
 		grafico = new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Marine3.gif")));
-		graficoPU = new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Marine3PU.gif")));
 	}
 	
 	//Clona el objeto

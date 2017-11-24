@@ -4,17 +4,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Alien_4 extends ProtoAlien {
-	private int velocidad = 2;
-	private int puntaje = 100;
-	private int dano = 8;
-	private int vida = 200;
-	private int alcance = 1;
-	private int monedas = 50;
 	
 	public Alien_4(){
-		state = new PU_Off();
-		grafico = new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Alien1.gif")));
-		graficoPU = new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Alien1PU.gif")));
+		velocidad = 2;
+		puntaje = 150;
+		dano = 3;
+		vida = 350;
+		alcance = 2;
+		monedas = 150;
+		grafico = new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Alien4.gif")));
 	}
 	
 	//Clona el objeto

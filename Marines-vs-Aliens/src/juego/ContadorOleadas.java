@@ -24,6 +24,8 @@ public class ContadorOleadas extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			if(objetos == 2)
+				gui.crearObjetoT();
 			if(objetos == 4){
 				gui.crearObjeto();
 				objetos = 0;
@@ -33,11 +35,19 @@ public class ContadorOleadas extends Thread {
 				gui.crearEnemigo(rnd.nextInt(4));
 				cantidad++;
 			}
-			if(cantidad >= 11 && cantidad <= 20){
-				gui.crearEnemigo(rnd.nextInt(2)+4);
+			if(cantidad == 10){
+				try {
+					Thread.sleep(15000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				gui.SegundaOleada();
+			}
+			if(cantidad >= 11 && cantidad < 20){
+				gui.crearEnemigo(rnd.nextInt(3)+3);
 				cantidad++;
 			}
-			if(cantidad == 21){
+			if(cantidad == 20){
 				if(logica.getEnemigos().isEmpty())
 					gui.ganar();
 			}
